@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    *{padding: 0;margin: 0;font-size: 16px;}
+    a{text-decoration: none;color: inherit;}
+    i{font-style: normal;}
+    .jump-btn{margin-top: 100px;text-align: center}
+    #jump{margin-top: 10px;padding: 5px 10px;background-color: steelblue;color: #fff;border: none;}
+    #pop{position: fixed;left: 0;top: 0;width: 100%;height: 100%;display: none;}
+    .bg{
+      width:100%;
+      height:100%;
+      background-color: #000;
+      opacity:0.3;
+      filter:alpha(opacity=30);
+      z-index: 100;
+      position: relative
+    }
+    .page{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -250px;
+      margin-top: -92px;
+      background-color: #FFF;
+      z-index: 200;
+    }
+    .close-img{
+      width: 500px;
+      height: 30px;
+      line-height: 30px;
+      border-bottom: 1px solid #ccc;
+    }
+    .close-tit{
+      margin-left: 5px;
+      font-weight: 700;
+      cursor: default;
+    }
+    #close{
+      display: inline-block;
+      float: right;
+      margin-top: 3px;
+      width:23px;
+      height: 23px;
+      line-height: 23px;
+      text-align: center;
+      color: #ccc;
+      margin-right:5px;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .enter-btn{width: 500px;text-align: center;padding-bottom: 31px}
+    .enter-text{padding-top: 50px;text-align: center;}
+    #countdown{font-weight: 700;color: red;margin-right: 5px}
+    #enter{display: inline-block;margin-top: 30px;background-color: blue;color: #fff;padding: 10px;}
+  </style>
+</head>
+<body>
+  <div class="jump-btn">
+    <p>你要想好，真的要跳转吗？</p>
+    <button id="jump">跳转</button>
+  </div>
+  <div id="pop">
+    <div class="bg"></div>
+    <div class="page">
+      <div class="close-img">
+        <i class="close-tit">温馨提示</i>
+        <i id="close" title="关闭">X</i>
+      </div>
+      <div class="enter-btn">
+        <p class="enter-text">
+          <i id="countdown"></i>秒后即将进入百度...
+        </p>
+        <a href="https://www.baidu.com" id="enter" title="立即跳转">立即跳转</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.onload = function () {
+      var oJump = document.getElementById('jump');
+      var oPop = document.getElementById('pop');
+      var oClose = document.getElementById('close');
+      var oTime = document.getElementById('countdown');
+      var t = 10;
+
+      oJump.onclick = function () {
+        oPop.style.display = 'block';
+        setInterval(showTime, 1000);
+      };
+
+      oClose.onclick = function () {
+        oPop.style.display = 'none';
+        clearInterval(timer);
+      };
+      
+      function showTime() {
+        t -= 1;
+        oTime.innerHTML = t;
+
+        if (t == 0){
+          location.href = 'https://www.baidu.com';
+        }
+      }
+
+      var timer = setInterval(showTime, 1000);
+
+
+
+    }
+  </script>
+</body>
+</html>
