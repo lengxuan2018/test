@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    *{padding: 0;margin: 0;font-size: 16px}
+    a{text-decoration: none;}
+    i{font-style: normal}
+    .login{width: 300px;position: absolute;top: 50px;left: 50%;margin-left: -150px;}
+    .tit{font-size: 20px;line-height: 30px;height: 30px;text-align: center;margin-bottom: 20px}
+    #user,#password{width: 276px;padding: 0 10px;height: 24px;line-height: 24px;margin-bottom: 10px}
+    #log-btn{margin: 20px auto 0;width: 100%;height: 30px;line-height: 24px;background-color: #ff4400;color: #fff;border: none}
+    .login-other{margin-top: 20px;text-align: center}
+    .login-other > h3{font-size: 14px;text-align: center;border-top: 1px solid #ccc;}
+    #alipay-btn{display: block;margin: 10px auto;width: 30px;height: 30px;background: url("zhifubao.jpg") center center no-repeat;background-size: 30px 30px}
+    #reg{margin-right: 20px;}
+    #party-log{display: none;position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 2}
+    .bg{width: 100%;height: 100%;background-color: #fff;opacity: .8;position: absolute;top: 0;left: 0;z-index: 5}
+    .party-info{width: 500px;position: absolute;top: 50px;left: 50%;margin-left: -250px;z-index: 10;background-color: #fff;border: 1px solid #ccc;padding: 0 10px;text-align: center}
+    .party-info > h3{font-size: 16px;color: #000;height: 30px;line-height: 30px;font-weight: normal;border-bottom: 1px solid #ccc;text-align: left}
+    .party-info > p{text-align: center;height: 25px;line-height: 25px;margin: 30px auto}
+    #party-btn{display:inline-block;margin-bottom: 20px;padding: 0 5px;background-color: #ff4400;color: #fff;border: none;}
+    #jump{display: none;position: absolute;top: 0;left: 0;z-index: 20;width: 100%;height: 100%;}
+    #jump-bg{width: 100%;height: 100%;background-color: #fff;opacity: .8;position: absolute;top: 0;left: 0;z-index: 25}
+    .jump-box{width: 400px;border: 1px solid #ccc;position: absolute;top: 50px;left: 50%;margin-left: -200px;z-index: 30;background-color: #fff;padding: 0 10px;text-align: center}
+    #jump-tit{font-size: 16px;color: #000;height: 30px;line-height: 30px;font-weight: normal;border-bottom: 1px solid #ccc;text-align: left}
+    #jump-info{margin: 80px auto 50px;text-align: center;}
+    #jump-time{color: red;margin: 0 5px}
+    #jump-now{display:inline-block;height: 30px;line-height: 30px;padding: 0 10px;background-color: #ff4400;color: #fff;margin-bottom: 30px}
+    #log-tips{display: none;color: red;font-size: 12px;}
+    #pass-tips{display: none;color: red;font-size: 12px;margin-top: -10px}
+  </style>
+  <script>
+    window.onload = function () {
+      var thisUrl = 'www.oneplus.com?a=xxx&b=xxxx&jump=https://www.baidu.com';
+      var oPartyLog = document.getElementById('party-log');   //第三方登录页面
+      var oJump = document.getElementById('jump');            //验证成功登录页面
+      var oLogin = document.getElementById('log-btn');        //登录按钮
+      var oJumpTime = document.getElementById('jump-time');   //跳转时间
+      var oJumpNow = document.getElementById('jump-now');     //立即跳转按钮
+      var oAlipayBtn = document.getElementById('alipay-btn'); //三方登录按钮
+      var t = 5;                                              //跳转时间
+      var timer;                                              //跳转定时器
+      var oLogTips = document.getElementById('log-tips');     //用户名提示
+      var oPassTips = document.getElementById('pass-tips');   //密码提示
+      var oPartyBtn = document.getElementById('party-btn');   //三方授权登录按钮
+
+
+      //获取跳转url
+      var data = thisUrl.split('?')[1];   //'a=xxx&b=xxxx&jump=https://www.baidu.com'
+      var dataArr = data.split('&')[2];   //['a=xxx&b=xxxx' , 'b=xxxx', 'jump=https://www.baidu.com']
+      var url = dataArr.split('=')[1];    //https://www.baidu.com
+
+
+      //跳转事件
+      function jump(){
+        oJump.style.display = 'block';
+        //跳转定时器
+        timer = setInterval(function () {
+          t--;
+          oJumpTime.innerHTML = t;
+          if(t==0){
+            clearInterval(timer);
+            window.open(url);
+            t=5;
+            oJumpTime.innerHTML = t;
+            oJump.style.display = 'none';
+          }
+        },1000);
+      }
+
+      //验证跳转事件
+      oLogin.onclick = function () {
+        var oUser = document.getElementById('user');
+        var oPass = document.getElementById('password');
+        var name = oUser.value;
+        var key = oPass.value;
+
+        //验证方式
+        //var telReg = /^((13[0-9])|(14[57])|(15([0-3]|[5-9])|(16[68])|(18[0,5-9]))\d{8}$/g
+        //var emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/gi
+        //var nameReg = /^((13[0-9])|(14[57])|(15([0-3]|[5-9])|(16[68])|(18[0,5-9]))\d{8}$|^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/gi;           //用户验证
+        var nameReg = /^1[835]\d{9}|^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/gi;
+        //var reg = /1[34568]\d{9}/gi;
+        var passReg = /.{6,16}/gi;                               //密码验证
+
+        //输入正确弹出
+        if(nameReg.test(name) == true && passReg.test(key) == true){
+          jump();
+        }
+
+        //输入错误提示
+        if(key != ''&& name != ''){             //如果用户名或密码都不为空
+          if(nameReg.test(name) == false|passReg.test(key) == false){   //用户名或密码错误
+            oLogTips.innerHTML = '用户名或密码错误';
+            oLogTips.style.display = 'block';
+            oPassTips.style.display = 'none';
+          }
+          if(key.length<6 || key.length>16){      //密码小于或大于规则
+            oPassTips.innerHTML = '密码长度为6-16位';
+            oPassTips.style.display = 'block';
+            oLogTips.style.display = 'none';
+          }
+        }
+        if(key == ''){                          //如果密码为空
+          oPassTips.innerHTML = '请输入密码';
+          oLogTips.style.display = 'none';
+          oPassTips.style.display = 'block';
+        }
+        if(name == ''){                         //如果用户名为空
+          oLogTips.innerHTML = '请输入账号';
+          oLogTips.style.display = 'block';
+          oPassTips.style.display = 'none';
+        }
+      };
+
+      //三方登录事件
+      oAlipayBtn.onclick = function () {
+        oPartyLog.style.display = 'block';
+      };
+      //授权登录事件
+      oPartyBtn.onclick = function () {
+        oPartyLog.style.display = 'none';
+        jump();
+      };
+      //立即跳转事件
+      oJumpNow.onclick = function () {
+        clearInterval(timer);
+        window.open(url);
+        t=5;
+        oJumpTime.innerHTML = t;
+        oJump.style.display = 'none';
+      }
+    }
+  </script>
+</head>
+<body>
+  <div>
+    <div class="login">
+      <h3 class="tit">登录</h3>
+      <div>
+        <p id="log-tips"></p>
+        <input type="text" placeholder="手机/邮箱" id="user">
+        <input type="text" placeholder="密码" id="password">
+        <p id="pass-tips"></p>
+      </div>
+      <div>
+        <button id="log-btn">登录</button>
+      </div>
+      <div class="login-other">
+        <h3>选择其它方式登录</h3>
+        <a href="javascript:" id="alipay-btn"></a>
+        <a href="javascript:" id="reg">注册</a>
+        <a href="javascript:">忘记密码</a>
+      </div>
+    </div>
+    <div id="party-log">
+      <div class="bg"></div>
+      <div class="party-info">
+        <h3>第三方登录</h3>
+        <p>欢迎使用支付宝登录</p>
+        <a href="javascript:" id="party-btn">授权登录</a>
+      </div>
+    </div>
+    <div id="jump">
+      <div id="jump-bg"></div>
+      <div class="jump-box">
+        <h3 id="jump-tit">登录成功</h3>
+        <p id="jump-info">登录成功，<i id="jump-time">5</i>秒后跳转</p>
+        <a href="javascript:" id="jump-now">立即跳转</a>
+      </div>
+    </div>
+
+
+  </div>
+</body>
+</html>
